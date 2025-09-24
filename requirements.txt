@@ -1,0 +1,29 @@
+# Core framework
+fastapi
+uvicorn[standard]
+
+# Database and ORM
+sqlalchemy>=2.0
+psycopg2-binary
+
+# Migrations
+alembic
+
+# Environment config
+python-dotenv
+
+# Data validation
+pydantic
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+pytest-cov
+
+# Security
+slowapi
+
+# Optional: type hints and dev tools
+mypy
+black

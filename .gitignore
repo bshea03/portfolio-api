@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+*.sqlite3
+
+# Docker
+*.log
+*.pid
+*.db
+pgdata/
+pgdata_test/
+volumes/
+*.sock
+
+# OS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Pytest
+htmlcov/
+.cache/
+.pytest_cache/
+test-data/
+
+# Backup
+*.sql
+*.dump
+*.tar.gz
+*.zip
