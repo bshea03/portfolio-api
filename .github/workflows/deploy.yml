@@ -31,12 +31,14 @@ jobs:
         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.dev
         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.dev
         echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.dev
+        echo "APP_ENV=dev" >> .env.dev
 
         echo "API_KEY=${{ secrets.TEST_API_KEY }}" > .env.test
         echo "DATABASE_URL=${{ secrets.TEST_DATABASE_URL }}" >> .env.test
         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.test
         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.test
         echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.test
+        echo "APP_ENV=test" >> .env.test
     - name: Start dev container
       run: make up env=dev
     - name: Run tests
@@ -82,4 +84,5 @@ jobs:
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.prod
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.prod
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.prod
+          echo "APP_ENV=prod" >> .env.prod
           make up env=prod
