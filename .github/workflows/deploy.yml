@@ -69,7 +69,7 @@ jobs:
         username: ${{ secrets.DROPLET_USER }}
         key: ${{ secrets.DROPLET_SSH_KEY }}
         source: "."
-        target: "~/python-api"
+        target: "~/portfolio-api"
 
     - name: SSH into Droplet and deploy
       uses: appleboy/ssh-action@v1
@@ -78,11 +78,12 @@ jobs:
         username: ${{ secrets.DROPLET_USER }}
         key: ${{ secrets.DROPLET_SSH_KEY }}
         script: |
-          cd ~/python-api
+          cd ~/portfolio-api
           echo "API_KEY=${{ secrets.API_KEY }}" > .env.prod
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env.prod
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.prod
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.prod
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.prod
           echo "APP_ENV=prod" >> .env.prod
-          make up env=prod
+    - name: Start prod container
+      run: make up env=prod
