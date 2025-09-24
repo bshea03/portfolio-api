@@ -36,7 +36,7 @@ app = FastAPI(
   lifespan=lifespan
 )
 
-if APP_ENV != "test":
+if APP_ENV == "prod":
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
     app.add_middleware(SlowAPIMiddleware)
