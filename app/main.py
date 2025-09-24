@@ -1,6 +1,5 @@
 from contextlib import asynccontextmanager
 import logging
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -14,7 +13,6 @@ from app.utils.skill_ranks import normalize_ranks
 
 log = logging.getLogger("uvicorn")
 limiter = Limiter(key_func=get_remote_address)
-APP_ENV = os.getenv("APP_ENV", "dev")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,10 +34,9 @@ app = FastAPI(
   lifespan=lifespan
 )
 
-if APP_ENV == "prod":
-    app.state.limiter = limiter
-    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-    app.add_middleware(SlowAPIMiddleware)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 # CORS setup — allow frontend access
 origins = [
