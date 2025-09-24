@@ -71,7 +71,7 @@ jobs:
         source: "."
         target: "~/portfolio-api"
 
-    - name: SSH into Droplet and deploy
+    - name: SSH into Droplet and run prod container
       uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.DROPLET_HOST }}
@@ -85,5 +85,4 @@ jobs:
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.prod
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.prod
           echo "APP_ENV=prod" >> .env.prod
-    - name: Start prod container
-      run: make up env=prod
+          make up env=prod
