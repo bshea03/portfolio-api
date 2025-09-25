@@ -2,7 +2,6 @@ FROM python:3.11-slim
 
 WORKDIR /app
 ENV PYTHONPATH="${PYTHONPATH}:/app"
-ENV DEBIAN_FRONTEND=noninteractive
 
 # Install PostgreSQL client tools for pg_isready
 RUN apt-get update && apt-get install -y postgresql-client curl certbot python3-certbot-nginx

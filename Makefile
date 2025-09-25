@@ -11,13 +11,12 @@ compose-env:
 	@echo "APP_ENV=$(env)" >> .env
 	@echo "ENV_FILE=.env.$(env)" >> .env
 
-ifeq ($(env),prod)
 up: compose-env
-	docker compose up -d --build
-else
-up: compose-env
-	docker compose --profile dev up -d --build
-endif
+	@if [ "$(env)" = "prod" ]; then \
+		docker compose up -d --build; \
+	else \
+		docker compose --profile dev up -d --build; \
+	fi
 
 down:
 	docker compose down
