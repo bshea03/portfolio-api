@@ -4,7 +4,14 @@ WORKDIR /app
 ENV PYTHONPATH="${PYTHONPATH}:/app"
 
 # Install PostgreSQL client tools for pg_isready
-RUN apt-get update && apt-get install -y postgresql-client curl certbot python3-certbot-nginx
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    postgresql-client \
+    curl \
+    certbot \
+    python3-certbot-nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
