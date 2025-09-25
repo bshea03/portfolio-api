@@ -2,7 +2,6 @@
 
 .PHONY: up down restart migrate revision current psql logs bash dbshell clean test backup restore doctor compose-env
 
-
 env ?= dev
 ENV_FILE := .env.$(env)
 
@@ -12,12 +11,13 @@ compose-env:
 	@echo "APP_ENV=$(env)" >> .env
 	@echo "ENV_FILE=.env.$(env)" >> .env
 
+ifeq ($(env),prod)
 up: compose-env
-	ifeq ($(env),prod)
-		docker compose up -d --build
-	else
-		docker compose --profile dev up -d --build
-	endif
+    docker compose up -d --build
+else
+up: compose-env
+    docker compose --profile dev up -d --build
+endif
 
 down:
 	docker compose down
