@@ -13,10 +13,10 @@ compose-env:
 
 ifeq ($(env),prod)
 up: compose-env
-    docker compose up -d --build
+	docker compose up -d --build
 else
 up: compose-env
-    docker compose --profile dev up -d --build
+	docker compose --profile dev up -d --build
 endif
 
 down:
@@ -48,6 +48,7 @@ dbshell:
 
 clean:
 	docker compose down -v --remove-orphans
+	docker network prune -f
 
 backup:
 	docker compose exec db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) -F c -f /var/lib/postgresql/data/backup.dump
