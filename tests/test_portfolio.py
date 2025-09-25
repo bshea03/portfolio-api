@@ -12,7 +12,7 @@ def seed_portfolio_data(client):
         "details": [{"text": "Led frontend guild meetings"}],
         "skills": ["React", "TypeScript", "AWS"]
     }
-    job = client.post("/api/jobs/", json=job_payload).json()
+    job = client.post("/v1/jobs/", json=job_payload).json()
 
     # Create project
     project_payload = {
@@ -29,7 +29,7 @@ def seed_portfolio_data(client):
             "conclusion": "Used by 100+ devs"
         }
     }
-    project = client.post("/api/projects/", json=project_payload).json()
+    project = client.post("/v1/projects/", json=project_payload).json()
 
     # Create award
     award_payload = {
@@ -38,7 +38,7 @@ def seed_portfolio_data(client):
         "icon": "./images/awards/top-engineer.png",
         "date": "June 2025"
     }
-    award = client.post("/api/awards/", json=award_payload).json()
+    award = client.post("/v1/awards/", json=award_payload).json()
 
     # Create skills
     skill_payloads = [
@@ -46,7 +46,7 @@ def seed_portfolio_data(client):
         {"name": "Docker", "icon": "./icons/docker.png", "category": SkillCategory.backend, "rank": 2},
         {"name": "React", "icon": "./icons/react.png", "category": SkillCategory.frontend, "rank": 1}
     ]
-    skills = [client.post("/api/skills/", json=payload).json() for payload in skill_payloads]
+    skills = [client.post("/v1/skills/", json=payload).json() for payload in skill_payloads]
 
     return {
         "job": job,
@@ -56,7 +56,7 @@ def seed_portfolio_data(client):
     }
 
 def test_get_portfolio(client, seed_portfolio_data):
-    response = client.get("/api/portfolio")
+    response = client.get("/v1/portfolio")
     assert response.status_code == 200
 
     data = response.json()

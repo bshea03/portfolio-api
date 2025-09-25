@@ -11,12 +11,12 @@ def award_payload():
 
 @pytest.fixture
 def created_award(client, award_payload):
-    response = client.post("/api/awards/", json=award_payload)
+    response = client.post("/v1/awards/", json=award_payload)
     assert response.status_code == 201
     return response.json()
 
 def test_create_award(client, award_payload):
-    response = client.post("/api/awards/", json=award_payload)
+    response = client.post("/v1/awards/", json=award_payload)
     assert response.status_code == 201
     award = response.json()
     assert award["title"] == award_payload["title"]
@@ -25,7 +25,7 @@ def test_create_award(client, award_payload):
     assert award["date"] == award_payload["date"]
 
 def test_get_all_awards(client, created_award):
-    response = client.get("/api/awards/")
+    response = client.get("/v1/awards/")
     assert response.status_code == 200
     awards = response.json()
     assert isinstance(awards, list)
@@ -33,7 +33,7 @@ def test_get_all_awards(client, created_award):
 
 def test_get_single_award(client, created_award):
     award_id = created_award["id"]
-    response = client.get(f"/api/awards/{award_id}")
+    response = client.get(f"/v1/awards/{award_id}")
     assert response.status_code == 200
     award = response.json()
     assert award["title"] == created_award["title"]
@@ -44,7 +44,7 @@ def test_update_award(client, created_award):
         "title": "Updated Engineer Award",
         "description": "Updated description for the award."
     }
-    response = client.patch(f"/api/awards/{award_id}", json=update_payload)
+    response = client.patch(f"/v1/awards/{award_id}", json=update_payload)
     assert response.status_code == 200
     updated = response.json()
     assert updated["title"] == "Updated Engineer Award"
@@ -52,9 +52,9 @@ def test_update_award(client, created_award):
 
 def test_delete_award(client, created_award):
     award_id = created_award["id"]
-    response = client.delete(f"/api/awards/{award_id}")
+    response = client.delete(f"/v1/awards/{award_id}")
     assert response.status_code == 204
 
     # Confirm deletion
-    response = client.get(f"/api/awards/{award_id}")
+    response = client.get(f"/v1/awards/{award_id}")
     assert response.status_code == 404

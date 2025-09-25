@@ -55,6 +55,6 @@ app.add_middleware(
 app.include_router(api_router)
 
 # Health check endpoint
-@app.get("/api/healthchecker")
+@app.get("/healthchecker")
 def health_check():
     return {"message": "FastAPI backend is running"}

@@ -28,12 +28,12 @@ def project_payload():
 
 @pytest.fixture
 def created_project(client, project_payload):
-    response = client.post("/api/projects/", json=project_payload)
+    response = client.post("/v1/projects/", json=project_payload)
     assert response.status_code == 201
     return response.json()
 
 def test_create_project(client, project_payload):
-    response = client.post("/api/projects/", json=project_payload)
+    response = client.post("/v1/projects/", json=project_payload)
     assert response.status_code == 201
     project = response.json()
     assert project["title"] == project_payload["title"]
@@ -41,7 +41,7 @@ def test_create_project(client, project_payload):
     assert project["details"]["intro"] == project_payload["details"]["intro"]
 
 def test_get_all_projects(client, created_project):
-    response = client.get("/api/projects/")
+    response = client.get("/v1/projects/")
     assert response.status_code == 200
     projects = response.json()
     assert isinstance(projects, list)
@@ -49,7 +49,7 @@ def test_get_all_projects(client, created_project):
 
 def test_get_single_project(client, created_project):
     project_id = created_project["id"]
-    response = client.get(f"/api/projects/{project_id}")
+    response = client.get(f"/v1/projects/{project_id}")
     assert response.status_code == 200
     project = response.json()
     assert project["title"] == created_project["title"]
@@ -60,7 +60,7 @@ def test_update_project(client, created_project):
         "title": "Updated Portfolio Platform",
         "description": "Updated description for the platform."
     }
-    response = client.patch(f"/api/projects/{project_id}", json=update_payload)
+    response = client.patch(f"/v1/projects/{project_id}", json=update_payload)
     assert response.status_code == 200
     updated = response.json()
     assert updated["title"] == "Updated Portfolio Platform"
@@ -68,9 +68,9 @@ def test_update_project(client, created_project):
 
 def test_delete_project(client, created_project):
     project_id = created_project["id"]
-    response = client.delete(f"/api/projects/{project_id}")
+    response = client.delete(f"/v1/projects/{project_id}")
     assert response.status_code == 204
 
     # Confirm deletion
-    response = client.get(f"/api/projects/{project_id}")
+    response = client.get(f"/v1/projects/{project_id}")
     assert response.status_code == 404

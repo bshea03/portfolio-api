@@ -36,7 +36,7 @@ def job_payload():
 
 @pytest.fixture
 def created_job(client, job_payload):
-    response = client.post("/api/jobs/", json=job_payload)
+    response = client.post("/v1/jobs/", json=job_payload)
     assert response.status_code == 201
     return response.json()
 
@@ -51,14 +51,14 @@ def assert_list_items_equal(expected, actual):
         assert "children" not in actual or actual["children"] is None
 
 def test_get_all_jobs(client, job_payload, created_job):
-    response = client.get("/api/jobs/")
+    response = client.get("/v1/jobs/")
     assert response.status_code == 200
     jobs = response.json()
     assert any(job["company"] == job_payload["company"] for job in jobs)
 
 def test_get_single_job(client, created_job):
     job_id = created_job["id"]
-    response = client.get(f"/api/jobs/{job_id}")
+    response = client.get(f"/v1/jobs/{job_id}")
     assert response.status_code == 200
     assert response.json()["company"] == created_job["company"]
 
@@ -68,7 +68,7 @@ def test_update_job(client, created_job):
         "company": "Dispatch AI",
         "description": "Updated description"
     }
-    response = client.patch(f"/api/jobs/{job_id}", json=update_payload)
+    response = client.patch(f"/v1/jobs/{job_id}", json=update_payload)
     assert response.status_code == 200
     job = response.json()
     assert job["company"] == "Dispatch AI"
@@ -76,9 +76,9 @@ def test_update_job(client, created_job):
 
 def test_delete_job(client, created_job):
     job_id = created_job["id"]
-    response = client.delete(f"/api/jobs/{job_id}")
+    response = client.delete(f"/v1/jobs/{job_id}")
     assert response.status_code == 204
 
     # Confirm deletion
-    response = client.get(f"/api/jobs/{job_id}")
+    response = client.get(f"/v1/jobs/{job_id}")
     assert response.status_code == 404

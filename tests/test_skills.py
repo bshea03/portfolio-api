@@ -30,12 +30,12 @@ def skill_payload_3():
 
 @pytest.fixture
 def created_skill(client, skill_payload):
-    response = client.post("/api/skills/", json=skill_payload)
+    response = client.post("/v1/skills/", json=skill_payload)
     assert response.status_code == 201
     return response.json()
 
 def test_create_skill_with_rank(client, skill_payload):
-    response = client.post("/api/skills/", json=skill_payload)
+    response = client.post("/v1/skills/", json=skill_payload)
     assert response.status_code == 201
     skill = response.json()
     assert skill["name"] == skill_payload["name"]
@@ -47,14 +47,14 @@ def test_create_skill_without_rank(client):
         "icon": "./icons/docker.png",
         "category": SkillCategory.backend
     }
-    response = client.post("/api/skills/", json=payload)
+    response = client.post("/v1/skills/", json=payload)
     assert response.status_code == 201
     skill = response.json()
     assert skill["name"] == "Docker"
     assert isinstance(skill["rank"], int)
 
 def test_get_all_skills_grouped(client, created_skill):
-    response = client.get("/api/skills/")
+    response = client.get("/v1/skills/")
     assert response.status_code == 200
     grouped = response.json()
     assert SkillCategory.backend.value in grouped
@@ -62,7 +62,7 @@ def test_get_all_skills_grouped(client, created_skill):
 
 def test_get_skills_by_category(client, created_skill):
     category = created_skill["category"]
-    response = client.get(f"/api/skills/{category}")
+    response = client.get(f"/v1/skills/{category}")
     assert response.status_code == 200
     skills = response.json()
     assert isinstance(skills, list)
@@ -74,7 +74,7 @@ def test_update_skill_rank_and_name(client, created_skill):
         "name": "FastAPI Pro",
         "rank": created_skill["rank"] + 1
     }
-    response = client.patch(f"/api/skills/{skill_id}", json=update_payload)
+    response = client.patch(f"/v1/skills/{skill_id}", json=update_payload)
     assert response.status_code == 200
     updated = response.json()
     assert updated["name"] == "FastAPI Pro"
@@ -82,20 +82,20 @@ def test_update_skill_rank_and_name(client, created_skill):
 
 def test_delete_skill(client, created_skill):
     skill_id = created_skill["id"]
-    response = client.delete(f"/api/skills/{skill_id}")
+    response = client.delete(f"/v1/skills/{skill_id}")
     assert response.status_code == 200
     assert "deleted" in response.json()["message"]
 
 def test_normalize_skills(client):
-    response = client.post("/api/skills/normalize")
+    response = client.post("/v1/skills/normalize")
     assert response.status_code == 200
     assert "Ranks normalized" in response.json()["message"]
 
 def test_rank_collision_on_insert(client, skill_payload, skill_payload_2, skill_payload_3):
     # Insert three skills with ranks 1, 2, 3
-    client.post("/api/skills/", json=skill_payload)
-    client.post("/api/skills/", json=skill_payload_2)
-    client.post("/api/skills/", json=skill_payload_3)
+    client.post("/v1/skills/", json=skill_payload)
+    client.post("/v1/skills/", json=skill_payload_2)
+    client.post("/v1/skills/", json=skill_payload_3)
 
     # Insert a new skill at rank 2 — should push s2 and s3 down
     collision_payload = {
@@ -104,11 +104,11 @@ def test_rank_collision_on_insert(client, skill_payload, skill_payload_2, skill_
         "category": SkillCategory.backend,
         "rank": 2
     }
-    inserted = client.post("/api/skills/", json=collision_payload).json()
+    inserted = client.post("/v1/skills/", json=collision_payload).json()
     assert inserted["rank"] == 2
 
     # Fetch all backend skills and verify ranks
-    response = client.get(f"/api/skills/{SkillCategory.backend.value}")
+    response = client.get(f"/v1/skills/{SkillCategory.backend.value}")
     skills = response.json()
     ranks = {s["name"]: s["rank"] for s in skills}
 
@@ -119,21 +119,21 @@ def test_rank_collision_on_insert(client, skill_payload, skill_payload_2, skill_
 
 def test_rank_shift_on_deletion(client):
     # Insert three skills
-    s1 = client.post("/api/skills/", json={
+    s1 = client.post("/v1/skills/", json={
         "name": "React",
         "icon": "./icons/react.png",
         "category": SkillCategory.frontend,
         "rank": 1
     }).json()
 
-    s2 = client.post("/api/skills/", json={
+    s2 = client.post("/v1/skills/", json={
         "name": "TailwindCSS",
         "icon": "./icons/tailwind.png",
         "category": SkillCategory.frontend,
         "rank": 2
     }).json()
 
-    s3 = client.post("/api/skills/", json={
+    s3 = client.post("/v1/skills/", json={
         "name": "TanStack Query",
         "icon": "./icons/query.png",
         "category": SkillCategory.frontend,
@@ -141,12 +141,12 @@ def test_rank_shift_on_deletion(client):
     }).json()
 
     # Delete rank 2 (TailwindCSS)
-    response = client.delete(f"/api/skills/{s2['id']}")
+    response = client.delete(f"/v1/skills/{s2['id']}")
     assert response.status_code == 200
     assert "deleted" in response.json()["message"]
 
     # Fetch remaining frontend skills and verify ranks
-    response = client.get(f"/api/skills/{SkillCategory.frontend.value}")
+    response = client.get(f"/v1/skills/{SkillCategory.frontend.value}")
     skills = response.json()
     ranks = {s["name"]: s["rank"] for s in skills}
 
