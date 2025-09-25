@@ -7,7 +7,7 @@ from app.database import get_db
 from app.utils.limiting import limiter
 from fastapi import Request
 
-router = APIRouter()
+router = APIRouter(prefix="/v1/jobs", tags=["Jobs v1"])
 
 @router.get('/', response_model=list[JobRead])
 @limiter.limit("10/minute")

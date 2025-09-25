@@ -11,7 +11,7 @@ from app.utils.skill_ranks import apply_rank_update, normalize_ranks, shift_rank
 from app.utils.limiting import limiter
 from fastapi import Request
 
-router = APIRouter()
+router = APIRouter(prefix="/v1/skills", tags=["Skills v1"])
 
 @router.get("/", response_model=dict)
 @limiter.limit("10/minute")

@@ -7,7 +7,7 @@ from app.utils.security import verify_api_key
 from app.utils.limiting import limiter
 from fastapi import Request
 
-router = APIRouter()
+router = APIRouter(prefix="/v1/projects", tags=["Projects v1"])
 
 @router.get("/", response_model=list[ProjectRead])
 @limiter.limit("10/minute")

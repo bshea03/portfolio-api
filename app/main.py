@@ -8,7 +8,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 
 from app.database import Base, SessionLocal, engine
-from app.routers import award, job, portfolio, project, skill
+from app.routers.router import api_router
 from app.utils.skill_ranks import normalize_ranks
 
 log = logging.getLogger("uvicorn")
@@ -52,13 +52,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register routers
-app.include_router(job.router, prefix="/api/jobs", tags=["Jobs"])
-app.include_router(project.router, prefix="/api/projects", tags=["Projects"])
-app.include_router(skill.router, prefix="/api/skills", tags=["Skill"])
-app.include_router(award.router, prefix="/api/awards", tags=["Award"])
-app.include_router(portfolio.router, prefix="/api")
-
+app.include_router(api_router)
 
 # Health check endpoint
 @app.get("/api/healthchecker")

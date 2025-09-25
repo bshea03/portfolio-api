@@ -12,8 +12,7 @@ from app.schemas.skill import SkillRead, SkillCategory
 from app.utils.limiting import limiter
 from fastapi import Request
 
-
-router = APIRouter()
+router = APIRouter(prefix="/v1/portfolio", tags=["Portfolio v1"])
 
 @router.get("/portfolio", response_model=dict)
 @limiter.limit("10/minute")
