@@ -13,7 +13,11 @@ compose-env:
 	@echo "ENV_FILE=.env.$(env)" >> .env
 
 up: compose-env
-	docker compose up -d --build
+	ifeq ($(env),prod)
+		docker compose up -d --build
+	else
+		docker compose --profile dev up -d --build
+	endif
 
 down:
 	docker compose down

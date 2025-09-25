@@ -49,6 +49,8 @@ services:
       - pgbackups:/backups
 
   test-runner:
+    profiles:
+      - dev
     build: .
     command: pytest
     restart: "no"
@@ -63,6 +65,8 @@ services:
         condition: service_healthy
 
   db-test:
+    profiles:
+      - dev
     image: postgres:15
     restart: always
     env_file:
@@ -78,6 +82,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
 
 
 volumes:
