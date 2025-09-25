@@ -86,3 +86,4 @@ jobs:
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.prod
           echo "APP_ENV=prod" >> .env.prod
           make up env=prod
+          make migrate 
