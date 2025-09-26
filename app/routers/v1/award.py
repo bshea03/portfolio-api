@@ -9,7 +9,7 @@ from fastapi import Request
 
 router = APIRouter(prefix="/v1/awards", tags=["Awards v1"])
 
-@router.get('/', response_model=list[AwardRead])
+@router.get('', response_model=list[AwardRead])
 @limiter.limit("10/minute")
 def get_awards(request: Request, db: Session = Depends(get_db)):
     return db.query(Award).all()
@@ -25,7 +25,7 @@ def get_award(request: Request, awardId: int, db: Session = Depends(get_db)):
         )
     return award
 
-@router.post('/', response_model=AwardRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
+@router.post('', response_model=AwardRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
 @limiter.limit("10/minute")
 def create_award(request: Request, payload: AwardCreate, db: Session = Depends(get_db)):
     award = Award(**payload.model_dump())

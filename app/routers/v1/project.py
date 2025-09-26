@@ -9,7 +9,7 @@ from fastapi import Request
 
 router = APIRouter(prefix="/v1/projects", tags=["Projects v1"])
 
-@router.get("/", response_model=list[ProjectRead])
+@router.get("", response_model=list[ProjectRead])
 @limiter.limit("10/minute")
 def get_projects(request: Request, db: Session = Depends(get_db)):
     return db.query(Project).all()
@@ -25,7 +25,7 @@ def get_project(request: Request, projectId: int, db: Session = Depends(get_db))
         )
     return project
 
-@router.post("/", response_model=ProjectRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
+@router.post("", response_model=ProjectRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
 @limiter.limit("10/minute")
 def create_project(request: Request, payload: ProjectCreate, db: Session = Depends(get_db)):
     project = Project(**payload.model_dump())

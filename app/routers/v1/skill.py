@@ -13,7 +13,7 @@ from fastapi import Request
 
 router = APIRouter(prefix="/v1/skills", tags=["Skills v1"])
 
-@router.get("/", response_model=dict)
+@router.get("", response_model=dict)
 @limiter.limit("10/minute")
 def get_all_skills(
     request: Request, 
@@ -45,7 +45,7 @@ def get_skills_by_category(request: Request, category: SkillCategory, db: Sessio
 
     return skills
 
-@router.post("/", response_model=SkillRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
+@router.post("", response_model=SkillRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
 @limiter.limit("10/minute")
 def create_skill(request: Request, payload: SkillCreate, db: Session = Depends(get_db)):
     if payload.rank is not None:

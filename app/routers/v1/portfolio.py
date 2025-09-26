@@ -14,7 +14,7 @@ from fastapi import Request
 
 router = APIRouter(prefix="/v1/portfolio", tags=["Portfolio v1"])
 
-@router.get("/", response_model=dict)
+@router.get("", response_model=dict)
 @limiter.limit("10/minute")
 def get_portfolio(request: Request, db: Session = Depends(get_db)):
     jobs = db.query(Job).order_by(Job.created_at.desc()).all()

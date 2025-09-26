@@ -9,12 +9,12 @@ from fastapi import Request
 
 router = APIRouter(prefix="/v1/jobs", tags=["Jobs v1"])
 
-@router.get('/', response_model=list[JobRead])
+@router.get('', response_model=list[JobRead])
 @limiter.limit("10/minute")
 def jobs(request: Request, db: Session = Depends(get_db)):
     return db.query(Job).all()
 
-@router.post('/', response_model=JobRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
+@router.post('', response_model=JobRead, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_api_key)])
 @limiter.limit("10/minute")
 def create_job(request: Request, payload: JobCreate, db: Session = Depends(get_db)):
     job = Job(**payload.model_dump())
