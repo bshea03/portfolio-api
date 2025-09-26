@@ -41,8 +41,8 @@ app.add_middleware(SlowAPIMiddleware)
 # CORS setup — allow frontend access
 origins = [
     "http://localhost:3000", 
-    "https://bshea03.github.io/",
-    "https://bradyshea.dev/" # your frontend dev server
+    "https://bshea03.github.io",
+    "https://bradyshea.dev" # your frontend dev server
 ]
 
 app.add_middleware(
