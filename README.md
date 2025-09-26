@@ -29,46 +29,51 @@ GET /v1/portfolio
 ---
 
 ### 🏆 `v1/awards`
-http```
-GET    /v1/awards               # List all awards  
-GET    /v1/awards/{id}          # Get award by ID  
-POST   /v1/awards               # Create new award (auth required)  
-PATCH  /v1/awards/{id}          # Update award (auth required)  
-DELETE /v1/awards/{id}          # Delete award (auth required)
+
+```http
+GET /v1/awards # List all awards  
+GET /v1/awards/{id} # Get award by ID  
+POST /v1/awards # Create new award (auth required)  
+PATCH /v1/awards/{id} # Update award (auth required)  
+DELETE /v1/awards/{id} # Delete award (auth required)
+
 ```
 
 ---
 
-###  💼 `/v1/jobs`
-http```
-GET    /v1/job                  # List all jobs  
-GET    /v1/job/{id}             # Get job by ID  
-POST   /v1/job                  # Create new job (auth required)  
-PATCH  /v1/job/{id}             # Update job (auth required)  
+### 💼 `/v1/jobs`
+
+```http
+GET    /v1/job                  # List all jobs
+GET    /v1/job/{id}             # Get job by ID
+POST   /v1/job                  # Create new job (auth required)
+PATCH  /v1/job/{id}             # Update job (auth required)
 DELETE /v1/job/{id}             # Delete job (auth required)
 ```
 
 ---
 
 ### 🧪 `/v1/projects`
-http```
-GET    /v1/projects             # List all projects  
-GET    /v1/projects/{id}        # Get project by ID  
-POST   /v1/projects             # Create new project (auth required)  
-PATCH  /v1/projects/{id}        # Update project (auth required)  
-DELETE /v1/projects/{id}        # Delete project (auth required)
+
+```http
+GET /v1/projects # List all projects  
+GET /v1/projects/{id} # Get project by ID  
+POST /v1/projects # Create new project (auth required)  
+PATCH /v1/projects/{id} # Update project (auth required)  
+DELETE /v1/projects/{id} # Delete project (auth required)
 ```
 
 ---
 
 ### 🧠 `/v1/skills`
-http```
-GET    /v1/skills               # Get all skills grouped by category  
-GET    /v1/skills/{category}    # Get skills by category  
-POST   /v1/skills               # Create new skill (auth required)  
-PATCH  /v1/skills/{id}          # Update skill (auth required)  
-DELETE /v1/skills/{id}          # Delete skill (auth required)  
-POST   /v1/skills/normalize     # Normalize skill ranks (auth required)  
+
+```http
+GET    /v1/skills               # Get all skills grouped by category
+GET    /v1/skills/{category}    # Get skills by category
+POST   /v1/skills               # Create new skill (auth required)
+PATCH  /v1/skills/{id}          # Update skill (auth required)
+DELETE /v1/skills/{id}          # Delete skill (auth required)
+POST   /v1/skills/normalize     # Normalize skill ranks (auth required)
 ```
 
 - Skill creation supports automatic or manual rank assignment.
@@ -77,6 +82,7 @@ POST   /v1/skills/normalize     # Normalize skill ranks (auth required)
 ---
 
 ## 🛠️ Tech Stack
+
 - FastAPI + Pydantic for routing and schema validation
 - PostgreSQL + SQLAlchemy for data persistence
 - Alembic for versioned migrations
@@ -87,6 +93,7 @@ POST   /v1/skills/normalize     # Normalize skill ranks (auth required)
 ---
 
 ## 🚀 Deployment
+
 - Hosted on DigitalOcean via Docker
 - Reverse proxy configured with Nginx
 - SSL certificates managed with Certbot
